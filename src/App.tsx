@@ -1,5 +1,4 @@
-import { For, createSignal, createEffect, onMount } from "solid-js";
-import "./App.css";
+import { For, createSignal, createEffect } from "solid-js";
 import { TaskData, TaskWidget } from "./TodoTask";
 import { createShortcut } from "@solid-primitives/keyboard";
 import { createStore } from "solid-js/store";
@@ -251,13 +250,16 @@ function App() {
                 selected={i() === selectedIndex()}
                 doFocusTask={i() === selectedIndex() && doFocusTask()}
                 onEditTaskTitle={onEditTaskTitle}
+                onTouch={() => setSelectedIndex(i())}
               />
             )}
           </For>
         </div>
 
         <div class="row">
-          <button onClick={createNewTask}>+</button>
+          <button class="add-task" onClick={createNewTask}>
+            +
+          </button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { autofocus } from "@solid-primitives/autofocus";
-import { createEffect, createSignal } from "solid-js";
+import { createEffect } from "solid-js";
 import uuid4 from "uuid4";
 
 autofocus;
@@ -22,6 +22,7 @@ type TaskWidgetProps = {
   selected: boolean;
   index: number;
   onEditTaskTitle: (uuid: string, newTitle: string) => undefined;
+  onTouch: () => any;
 };
 
 export const TaskWidget = (props: TaskWidgetProps) => {
@@ -39,7 +40,7 @@ export const TaskWidget = (props: TaskWidgetProps) => {
   ];
 
   return (
-    <article class={classes().join(" ")}>
+    <article class={classes().join(" ")} onClick={props.onTouch}>
       <div class="task-accent"></div>
       <input
         ref={inputRef}
