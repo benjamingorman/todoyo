@@ -1,109 +1,115 @@
 :root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+    background: white;
+    font-family: PlayfairDisplay;
+    color: black;
 }
 
-.container {
-  margin: 0;
-  padding-top: 10vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+body {
+    margin: 0;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
+button {
+    border: 1px solid black;
+    padding: 5px;
+    background: var(--pico-color-yellow-150);
 }
 
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
+div.container {
+    padding: 0.5rem;
 }
 
 h1 {
-  text-align: center;
+    margin: 0;
+    padding: 0.4rem;
+    padding-bottom: 0;
+    font-family: PlayfairDisplay;
+    border-bottom: 1px solid black;
 }
 
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+span.yo-accent {
+    color: black;
 }
 
-button {
-  cursor: pointer;
+article {
+    display: flex;
+    padding: 0.0rem;
+    /* border-radius: 4px; */
+    background: white;
+    border: 1px solid black;
+    margin: 10px 0;
+    height: 2.2rem;
+    width: 400px;
+    /* overflow-y: hidden; */
 }
 
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
+article div.task-accent {
+    flex-basis: 0px;
+    transition: flex-basis 0.2s;
+    background: var(--pico-color-yellow-150);
 }
 
-input,
-button {
-  outline: none;
+article:has(input:focus) {
+    background: var(--pico-color-green-50);
 }
 
-#greet-input {
-  margin-right: 5px;
+article:has(input:focus) div.task-accent {
+    background: var(--pico-color-green-150);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
-  }
+article.task-done {
+    background: var(--pico-color-grey-50);
+}
 
-  a:hover {
-    color: #24c8db;
-  }
+article.task-done div.task-accent {
+    flex-basis: 12px;
+    background: var(--pico-color-grey-150);
+}
 
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
-  }
+article.selected {
+    background: var(--pico-color-yellow-50);
+}
+
+
+article.selected div.task-accent {
+    flex-basis: 12px;
+}
+
+article input {
+    flex: 1;
+    margin: 0.2rem 0 0 0.3rem;
+    padding: 0;
+    border: none;
+    height: 1.8rem;
+    background: inherit;
+    font-size: 1rem;
+    font-family: PlayfairDisplay;
+}
+
+article input:focus {
+    outline: none;
+}
+
+
+article input.task-done {
+    text-decoration: line-through;
+}
+
+
+@font-face {
+    font-display: block;
+    font-family: PatrickHand;
+    src: url("./assets/fonts/PatrickHand-Regular.ttf");
+}
+
+
+@font-face {
+    font-display: block;
+    font-family: ArchivoBlack;
+    src: url("./assets/fonts/ArchivoBlack-Regular.ttf");
+}
+
+@font-face {
+    font-display: block;
+    font-family: PlayfairDisplay;
+    src: url("./assets/fonts/PlayfairDisplay-VariableFont_wght.ttf");
 }

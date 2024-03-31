@@ -1,6 +1,6 @@
 {
   "name": "todoyo",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "type": "module",
   "scripts": {
@@ -12,13 +12,18 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@solid-primitives/active-element": "^2.0.20",
+    "@solid-primitives/autofocus": "^0.0.111",
+    "@solid-primitives/keyboard": "^1.2.8",
+    "@tauri-apps/api": "^1",
     "solid-js": "^1.7.8",
-    "@tauri-apps/api": "^1"
+    "uuid4": "^2.0.3"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^1",
+    "@types/uuid4": "^2.0.3",
     "typescript": "^5.0.2",
     "vite": "^5.0.0",
-    "vite-plugin-solid": "^2.8.0",
-    "@tauri-apps/cli": "^1"
+    "vite-plugin-solid": "^2.8.0"
   }
 }
