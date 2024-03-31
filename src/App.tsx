@@ -1,8 +1,9 @@
-import { For, createSignal } from "solid-js";
+import { For, createSignal, createEffect, onMount } from "solid-js";
 import "./App.css";
 import { TaskData, TaskWidget } from "./TodoTask";
 import { createShortcut } from "@solid-primitives/keyboard";
 import { createStore } from "solid-js/store";
+import { Store } from "tauri-plugin-store-api";
 
 enum HotKeys {
   NEW_TASK,
@@ -30,12 +31,33 @@ const Bindings = {
   [HotKeys.GO_TO_END]: ["Shift", "g"],
 };
 
+let DONE_LOAD_TASKS = false;
+
 function App() {
   const initTask = new TaskData();
   initTask.title = "New task";
   const [tasks, setTasks] = createStore([initTask]);
   const [selectedIndex, setSelectedIndex] = createSignal(0);
   const [doFocusTask, setDoFocusTask] = createSignal(false);
+  const store = new Store(".settings.dat");
+
+  createEffect(() => {
+    store.set("tasks", tasks);
+    store.save();
+    console.log("Tasks saved", tasks);
+  });
+
+  if (!DONE_LOAD_TASKS) {
+    store.get("tasks").then(
+      (data) => {
+        setTasks(data as TaskData[]);
+      },
+      (e) => {
+        console.error("No tasks found in store", e);
+      }
+    );
+    DONE_LOAD_TASKS = true;
+  }
 
   const createNewTask = () => {
     const prevTasks = [];
