@@ -1,14 +1,17 @@
 import { For, createSignal, createEffect } from "solid-js";
-import { TaskData, TaskWidget } from "./TodoTask";
+import { TaskData, TaskWidget, TaskList } from "./TodoTask";
 import { createShortcut } from "@solid-primitives/keyboard";
 import { createStore } from "solid-js/store";
 import { Store } from "tauri-plugin-store-api";
+import { TodoTitle } from "./TodoTitle";
 
 enum HotKeys {
   NEW_TASK,
   EDIT_TASK,
   NEXT_ITEM,
   PREV_ITEM,
+  NEXT_LIST,
+  PREV_LIST,
   DONE_TASK,
   UNDO_DONE_TASK,
   SWAP_UP,
@@ -22,6 +25,8 @@ const Bindings = {
   [HotKeys.EDIT_TASK]: ["i"],
   [HotKeys.NEXT_ITEM]: ["j"],
   [HotKeys.PREV_ITEM]: ["k"],
+  [HotKeys.NEXT_LIST]: ["l"],
+  [HotKeys.PREV_LIST]: ["h"],
   [HotKeys.DONE_TASK]: ["x"],
   [HotKeys.UNDO_DONE_TASK]: ["u"],
   [HotKeys.SWAP_UP]: ["["],
@@ -30,26 +35,75 @@ const Bindings = {
   [HotKeys.GO_TO_END]: ["Shift", "g"],
 };
 
+const SETTINGS_VERSION = 1;
 let DONE_LOAD_TASKS = false;
 
 function App() {
   const initTask = new TaskData();
   initTask.title = "New task";
-  const [tasks, setTasks] = createStore([initTask]);
-  const [selectedIndex, setSelectedIndex] = createSignal(0);
-  const [doFocusTask, setDoFocusTask] = createSignal(false);
-  const store = new Store(".settings.dat");
+  const initList: TaskList = { title: "Tasks", tasks: [initTask], done: false };
+  const initList2: TaskList = { title: "Tasks 2", tasks: [new TaskData()], done: false };
+  const [taskLists, setTaskLists] = createStore<TaskList[]>([initList, initList2]);
+  const [selectedListIndex, setSelectedListIndex] = createSignal(0);
+  // -1 means no task is selected and we're editing the list title
+  const [selectedIndex, setSelectedIndex] = createSignal(-1);
+  const [doFocus, setDoFocus] = createSignal(false);
+  const store = new Store(`.tasks.${SETTINGS_VERSION}.dat`);
+
+  let todoListsRef: HTMLDivElement | undefined;
 
   createEffect(() => {
-    store.set("tasks", tasks);
+    if (!todoListsRef) return;
+    const listRef = document.getElementById(`todo-list-${selectedListIndex()}`);
+    console.log("listRef", listRef);
+    if (!listRef) return;
+    console.log("offsetLeft", listRef.offsetLeft);
+    console.log("scrollLeft", todoListsRef.scrollLeft);
+    todoListsRef.scrollTo({
+      left: listRef.offsetLeft,
+      behavior: "smooth",
+    })
+  });
+
+  const getCurrentList = () => {
+    return taskLists[selectedListIndex()];
+  }
+
+  const setTasks = (tasks: TaskData[]) => {
+    if (!taskLists[selectedListIndex()]) return;
+    const newList = { ...taskLists[selectedListIndex()] };
+    newList.tasks = tasks;
+    setTaskLists(selectedListIndex(), newList);
+  };
+
+  const setTasksByUuid = (uuid: string, tfn: (task: TaskData) => TaskData) => {
+    const newTasks = getTasks().map((task) => {
+      if (task.uuid === uuid) return tfn(task);
+      return task;
+    });
+    setTasks(newTasks);
+  }
+
+  const getTasks = () => {
+    if (!taskLists[selectedListIndex()]) return [];
+    return taskLists[selectedListIndex()].tasks;
+  }
+
+  // createEffect(() => {
+  //   sliderControl.moveTo(selectedListIndex());
+  // });
+
+  createEffect(() => {
+    store.set("taskLists", taskLists);
     store.save();
-    console.log("Tasks saved", tasks);
+    console.log("Tasks saved", taskLists);
   });
 
   if (!DONE_LOAD_TASKS) {
     store.get("tasks").then(
       (data) => {
-        setTasks(data as TaskData[]);
+        if (!data) return;
+        setTaskLists(data as TaskList[]);
       },
       (e) => {
         console.error("No tasks found in store", e);
@@ -61,6 +115,9 @@ function App() {
   const createNewTask = () => {
     const prevTasks = [];
     let targetIndex = selectedIndex();
+
+    const tasks = getTasks();
+    if (!tasks) return;
 
     // Prevent appending a new task after a done task
     if (tasks[targetIndex]?.done) {
@@ -76,12 +133,17 @@ function App() {
     }
 
     setTasks([...prevTasks, new TaskData(), ...nextTasks]);
-    setSelectedIndex(Math.min(targetIndex + 1, tasks.length - 1));
-    setDoFocusTask(true);
+    setSelectedIndex(Math.min(targetIndex + 1, getTasks().length - 1));
+    setDoFocus(true);
     setTimeout(() => {
-      setDoFocusTask(false);
+      setDoFocus(false);
     });
   };
+
+  const appendNewTaskList = () => {
+    const newTitle = taskLists.length === 0 ? "Tasks" : `Tasks ${taskLists.length + 1}`;
+    setTaskLists([...taskLists, { title: `${newTitle}`, tasks: [], done: false }]);
+  }
 
   createShortcut(Bindings[HotKeys.NEW_TASK], createNewTask, {
     preventDefault: true,
@@ -91,9 +153,9 @@ function App() {
   createShortcut(
     Bindings[HotKeys.EDIT_TASK],
     () => {
-      setDoFocusTask(true);
+      setDoFocus(true);
       setTimeout(() => {
-        setDoFocusTask(false);
+        setDoFocus(false);
       });
     },
     { preventDefault: true, requireReset: true }
@@ -102,7 +164,7 @@ function App() {
   createShortcut(
     Bindings[HotKeys.NEXT_ITEM],
     () => {
-      setSelectedIndex(Math.min(selectedIndex() + 1, tasks.length - 1));
+      setSelectedIndex(Math.min(selectedIndex() + 1, getTasks().length - 1));
       console.log("Next item", selectedIndex());
     },
     { preventDefault: true, requireReset: true }
@@ -111,16 +173,61 @@ function App() {
   createShortcut(
     Bindings[HotKeys.PREV_ITEM],
     () => {
-      setSelectedIndex(Math.max(selectedIndex() - 1, 0));
+      setSelectedIndex(Math.max(selectedIndex() - 1, -1));
       console.log("Prev item", selectedIndex());
     },
     { preventDefault: true, requireReset: true }
   );
 
   createShortcut(
+    Bindings[HotKeys.NEXT_LIST],
+    () => {
+      if (selectedListIndex() === taskLists.length - 1) {
+        console.log("Creating new list");
+        appendNewTaskList();
+      }
+      setSelectedListIndex(Math.min(selectedListIndex() + 1, taskLists.length - 1));
+      setSelectedIndex(Math.max(-1, Math.min(selectedIndex(), getTasks().length - 1)));
+      console.log("Next list", selectedListIndex());
+    },
+    { preventDefault: true, requireReset: true }
+  );
+
+  createShortcut(
+    Bindings[HotKeys.PREV_LIST],
+    () => {
+      setSelectedListIndex(Math.max(selectedListIndex() - 1, -1));
+      setSelectedIndex(Math.max(-1, Math.min(selectedIndex(), getTasks().length - 1)));
+
+      console.log("Prev list", selectedListIndex());
+    },
+    { preventDefault: true, requireReset: true }
+  );
+
+
+  createShortcut(
     Bindings[HotKeys.DONE_TASK],
     () => {
-      const task = tasks[selectedIndex()];
+      if (selectedIndex() === -1) {
+        // Mark the whole list as done
+        if (getCurrentList().done) {
+          // Delete the list
+          const newLists = taskLists.filter((_, i) => i !== selectedListIndex());
+          setTaskLists(newLists);
+
+          if (taskLists.length === 0) {
+            appendNewTaskList();
+          }
+          setSelectedListIndex(Math.max(selectedListIndex() - 1, 0));
+        } else {
+          // Mark the list as done
+          const newList = { ...getCurrentList(), done: true };
+          setTaskLists(selectedListIndex(), newList);
+        }
+        return;
+      };
+
+      const task = getTasks()[selectedIndex()];
       if (!task) return;
 
       console.log("Marking task as done", selectedIndex());
@@ -128,7 +235,7 @@ function App() {
       if (!task.done) {
         // Mark the task as done and move it to either the end
         // or the beginning of the done tasks.
-        const newTasks = [...tasks];
+        const newTasks = [...getTasks()];
         const targetTask = newTasks[selectedIndex()];
         const editedTask = { ...targetTask, done: true };
         console.log("Target task", targetTask);
@@ -142,10 +249,10 @@ function App() {
         setTasks(newTasks);
       } else {
         // Delete the task
-        const newTasks = tasks.filter((_, i) => i !== selectedIndex());
+        const newTasks = getTasks().filter((_, i) => i !== selectedIndex());
         setTasks(newTasks);
         // And decrement the index
-        setSelectedIndex(Math.max(selectedIndex() - 1, 0));
+        setSelectedIndex(Math.max(selectedIndex() - 1, -1));
       }
     },
     { preventDefault: true, requireReset: true }
@@ -154,13 +261,20 @@ function App() {
   createShortcut(
     Bindings[HotKeys.UNDO_DONE_TASK],
     () => {
-      const task = tasks[selectedIndex()];
+      if (selectedIndex() === -1) {
+        // Mark the title as not done
+        if (!getCurrentList().done) return;
+        const newList = { ...getCurrentList(), done: false };
+        setTaskLists(selectedListIndex(), newList);
+      }
+
+      const task = getTasks()[selectedIndex()];
       if (!task || !task.done) return;
 
       console.log("Marking task as not done", selectedIndex());
 
       // Mark the task as not done and move it to the end of active tasks.
-      const newTasks = [...tasks];
+      const newTasks = [...getTasks()];
       const targetTask = newTasks[selectedIndex()];
       const editedTask = { ...targetTask, done: false };
       newTasks.splice(selectedIndex(), 1);
@@ -181,7 +295,7 @@ function App() {
     () => {
       console.log("SWAP UP", selectedIndex());
       if (selectedIndex() === 0) return;
-      const newTasks = [...tasks];
+      const newTasks = [...getTasks()];
       const task = newTasks[selectedIndex()];
       newTasks[selectedIndex()] = newTasks[selectedIndex() - 1];
       newTasks[selectedIndex() - 1] = task;
@@ -195,8 +309,8 @@ function App() {
     Bindings[HotKeys.SWAP_DOWN],
     () => {
       console.log("SWAP DOWN", selectedIndex());
-      if (selectedIndex() === tasks.length - 1) return;
-      const newTasks = [...tasks];
+      if (selectedIndex() === getTasks().length - 1) return;
+      const newTasks = [...getTasks()];
       const task = newTasks[selectedIndex()];
       newTasks[selectedIndex()] = newTasks[selectedIndex() + 1];
       newTasks[selectedIndex() + 1] = task;
@@ -209,7 +323,7 @@ function App() {
   createShortcut(
     Bindings[HotKeys.GO_TO_START],
     () => {
-      setSelectedIndex(0);
+      setSelectedIndex(getTasks().length ? 0 : -1);
     },
     { preventDefault: true, requireReset: true }
   );
@@ -217,18 +331,25 @@ function App() {
   createShortcut(
     Bindings[HotKeys.GO_TO_END],
     () => {
-      setSelectedIndex(Math.max(tasks.length - 1, 0));
+      setSelectedIndex(Math.max(getTasks().length - 1, -1));
     },
     { preventDefault: true, requireReset: true }
   );
 
   const onEditTaskTitle = (uuid: string, newTitle: string): undefined => {
-    setTasks(
-      (task) => task.uuid === uuid,
+    setTasksByUuid(
+      uuid,
       (task) => {
         return { ...task, title: newTitle };
       }
     );
+  };
+
+  const onEditListTitle = (index: number, newTitle: string): undefined => {
+    const newList = { ...taskLists[index] };
+    newList.title = newTitle;
+    setTaskLists(index, newList);
+    console.log("List title changed", index, newTitle);
   };
 
   return (
@@ -237,30 +358,46 @@ function App() {
         todo<span class="yo-accent">yo.</span>
       </h1>
 
-      {/* <p>
-        {selectedIndex()} {`${editingActive()}`}
-      </p> */}
-      <div class="container">
-        <div class="row">
-          <For each={tasks}>
-            {(task, i) => (
-              <TaskWidget
-                task={task}
-                index={i()}
-                selected={i() === selectedIndex()}
-                doFocusTask={i() === selectedIndex() && doFocusTask()}
-                onEditTaskTitle={onEditTaskTitle}
-                onTouch={() => setSelectedIndex(i())}
+      <div ref={todoListsRef} class="todo-lists">
+        <For each={taskLists}>{(currList, i) => (
+          <div id={`todo-list-${i()}`} class="container">
+            <div class="row">
+              <TodoTitle
+                text={currList.title}
+                done={currList.done}
+                selected={i() === selectedListIndex() && selectedIndex() === -1}
+                doFocus={i() === selectedListIndex() && selectedIndex() === -1 && doFocus()}
+                onEdit={(newTitle: string) => { onEditListTitle(i(), newTitle) }}
               />
-            )}
-          </For>
-        </div>
+            </div>
 
-        <div class="row">
-          <button class="add-task" onClick={createNewTask}>
-            +
-          </button>
-        </div>
+            <div class="row">
+              <For each={currList.tasks}>
+                {(task, j) => (
+                  <TaskWidget
+                    task={task}
+                    index={j()}
+                    selected={i() === selectedListIndex() && j() === selectedIndex()}
+                    doFocus={i() === selectedListIndex() && j() === selectedIndex() && doFocus()}
+                    onEditTaskTitle={onEditTaskTitle}
+                    onTouch={() => {
+                      setSelectedIndex(j())
+                      setSelectedListIndex(i())
+                    }}
+                  />
+                )}
+              </For>
+            </div>
+
+            <div class="row">
+              <button class="add-task" onClick={createNewTask}>
+                +
+              </button>
+            </div>
+          </div>
+        )}</For>
+        {/* Ghost container to make sure scrolling always works */}
+        <div class="container"></div>
       </div>
     </div>
   );

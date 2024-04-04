@@ -4,6 +4,12 @@ import uuid4 from "uuid4";
 
 autofocus;
 
+export interface TaskList {
+  title: string;
+  done: boolean;
+  tasks: TaskData[];
+}
+
 export class TaskData {
   uuid: string;
   title: string;
@@ -18,7 +24,7 @@ export class TaskData {
 
 type TaskWidgetProps = {
   task: TaskData;
-  doFocusTask: boolean;
+  doFocus: boolean;
   selected: boolean;
   index: number;
   onEditTaskTitle: (uuid: string, newTitle: string) => undefined;
@@ -31,7 +37,7 @@ export const TaskWidget = (props: TaskWidgetProps) => {
   let inputRef: HTMLInputElement | undefined;
 
   createEffect(() => {
-    if (props.doFocusTask) inputRef?.focus();
+    if (props.doFocus) inputRef?.focus();
   });
 
   const classes = () => [

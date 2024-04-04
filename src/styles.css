@@ -96,6 +96,60 @@ article input.task-done {
     text-decoration: line-through;
 }
 
+.todo-title {
+  display: flex;
+  gap: 5px;
+}
+
+.todo-title input {
+  font-size: 1rem;
+  border: none;
+  margin: 0;
+  flex-basis: 400px;
+  padding-bottom: 0;
+  font-weight: normal;
+  text-decoration: none;
+  font-family: PlayfairDisplay;
+}
+
+.todo-title .title-accent {
+  flex-basis: 0px;
+  transition: flex-basis 0.2s;
+  background: var(--pico-color-yellow-150);
+}
+
+.todo-title.selected .title-accent {
+  flex-basis: 12px;
+}
+
+.todo-title:has(input:focus) .title-accent {
+    background: var(--pico-color-blue-150);
+}
+
+.todo-title input:focus {
+    /* background: var(--pico-color-blue-50); */
+    outline: none;
+}
+
+.todo-title.done {
+  text-decoration: line-through;
+}
+
+.todo-title.selected {
+}
+
+.todo-lists {
+  width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  scroll-snap-type: x mandatory;
+}
+
+.todo-lists .container {
+  flex: 0 0 auto;
+  width: 400px;
+  scroll-snap-align: left;
+}
 
 @font-face {
     font-display: block;
@@ -116,26 +170,3 @@ article input.task-done {
     src: url("./assets/fonts/PlayfairDisplay-VariableFont_wght.ttf");
 }
 
-.titlebar {
-    height: 20px;
-    background: transparent;
-    /* border-bottom: 1px solid black; */
-    user-select: none;
-    display: flex;
-    justify-content: flex-end;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
-  .titlebar-button {
-    display: inline-flex;
-    color: white;
-    justify-content: center;
-    align-items: center;
-    width: 20px;
-    height: 20px;
-  }
-  .titlebar-button:hover {
-    background: var(--pico-color-blue-150);
-  }

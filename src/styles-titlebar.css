@@ -1,0 +1,23 @@
+.titlebar {
+    height: 20px;
+    background: transparent;
+    /* border-bottom: 1px solid black; */
+    user-select: none;
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .titlebar-button {
+    display: inline-flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+  }
+  .titlebar-button:hover {
+    background: var(--pico-color-blue-150);
+  }
