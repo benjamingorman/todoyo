@@ -12,7 +12,7 @@ body {
 button.add-task {
     border: 1px solid black;
     margin-top: 10px;
-    padding: 5px;
+    padding: 0.2rem;
     background: var(--pico-color-green-150);
 }
 
@@ -98,7 +98,6 @@ article input.task-done {
 
 .todo-title {
   display: flex;
-  gap: 5px;
 }
 
 .todo-title input {
@@ -114,12 +113,14 @@ article input.task-done {
 
 .todo-title .title-accent {
   flex-basis: 0px;
-  transition: flex-basis 0.2s;
+  margin-right: 0px;
+  transition: all 0.2s;
   background: var(--pico-color-yellow-150);
 }
 
 .todo-title.selected .title-accent {
   flex-basis: 12px;
+  margin-right: 0.2rem;
 }
 
 .todo-title:has(input:focus) .title-accent {

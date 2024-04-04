@@ -35,6 +35,12 @@ const Bindings = {
   [HotKeys.GO_TO_END]: ["Shift", "g"],
 };
 
+interface SaveData {
+  taskLists: TaskList[];
+  selectedListIndex: number;
+  selectedIndex: number;
+}
+
 const SETTINGS_VERSION = 1;
 let DONE_LOAD_TASKS = false;
 
@@ -42,8 +48,7 @@ function App() {
   const initTask = new TaskData();
   initTask.title = "New task";
   const initList: TaskList = { title: "Tasks", tasks: [initTask], done: false };
-  const initList2: TaskList = { title: "Tasks 2", tasks: [new TaskData()], done: false };
-  const [taskLists, setTaskLists] = createStore<TaskList[]>([initList, initList2]);
+  const [taskLists, setTaskLists] = createStore<TaskList[]>([initList]);
   const [selectedListIndex, setSelectedListIndex] = createSignal(0);
   // -1 means no task is selected and we're editing the list title
   const [selectedIndex, setSelectedIndex] = createSignal(-1);
@@ -64,6 +69,44 @@ function App() {
       behavior: "smooth",
     })
   });
+
+  // Save/load tasks from store
+  createEffect(() => {
+    const saveData: SaveData = {
+      taskLists: taskLists,
+      selectedListIndex: selectedListIndex(),
+      selectedIndex: selectedIndex(),
+    };
+    console.log("Saving tasks...", saveData);
+    // Use different save data for dev and prod
+    store.set(`saveData-${window.location.host}`, saveData);
+    store.save();
+  });
+
+  if (!DONE_LOAD_TASKS) {
+    store.get(`saveData-${window.location.host}`).then(
+      (data) => {
+        if (!data) {
+          console.error("No save data found in store");
+          return;
+        }
+
+        const saveData = data as SaveData;
+        if (!saveData.taskLists) {
+          console.error("No lists found in saveData");
+          return;
+        };
+
+        setTaskLists(saveData.taskLists);
+        setSelectedListIndex(saveData.selectedListIndex);
+        setSelectedIndex(saveData.selectedIndex);
+      },
+      (e) => {
+        console.error("No tasks found in store", e);
+      }
+    );
+    DONE_LOAD_TASKS = true;
+  }
 
   const getCurrentList = () => {
     return taskLists[selectedListIndex()];
@@ -92,25 +135,6 @@ function App() {
   // createEffect(() => {
   //   sliderControl.moveTo(selectedListIndex());
   // });
-
-  createEffect(() => {
-    store.set("taskLists", taskLists);
-    store.save();
-    console.log("Tasks saved", taskLists);
-  });
-
-  if (!DONE_LOAD_TASKS) {
-    store.get("tasks").then(
-      (data) => {
-        if (!data) return;
-        setTaskLists(data as TaskList[]);
-      },
-      (e) => {
-        console.error("No tasks found in store", e);
-      }
-    );
-    DONE_LOAD_TASKS = true;
-  }
 
   const createNewTask = () => {
     const prevTasks = [];
@@ -196,7 +220,7 @@ function App() {
   createShortcut(
     Bindings[HotKeys.PREV_LIST],
     () => {
-      setSelectedListIndex(Math.max(selectedListIndex() - 1, -1));
+      setSelectedListIndex(Math.max(selectedListIndex() - 1, 0));
       setSelectedIndex(Math.max(-1, Math.min(selectedIndex(), getTasks().length - 1)));
 
       console.log("Prev list", selectedListIndex());
