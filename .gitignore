@@ -1,3 +1,4 @@
 node_modules
 dist
 pico-main
+.DS_Store

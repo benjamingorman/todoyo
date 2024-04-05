@@ -4,7 +4,7 @@ Todoyo is a minimalist todo app based around vim motions.
 
 It is designed to make the experience of editing a todo list as pleasant and quick as possible.
 
-![todoyo screenshot](./screenshots/todoyo-example.png)
+![todoyo screenshot](./screenshots/todoyo-example.jpeg)
 
 ## Dev
 
