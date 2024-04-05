@@ -7,6 +7,21 @@ and efficient as possible.
 
 ![todoyo screenshot](./screenshots/todoyo-example.jpeg)
 
+## Features
+
+- [x] Vim style navigation
+- [x] Persistent local storage
+- [x] Support for multiple named todo lists
+- [ ] Customizable themes
+- [ ] Customizable keybindings
+- [ ] Support for nested todo items
+- [ ] Support for tags/coloured labels
+- [ ] Search
+- [ ] Copy and paste
+- [ ] Extended todo descriptions
+- [ ] Focus mode (show only a priority item)
+- [ ] Pomodoro mode
+
 ## Dev
 
 ### Recommended IDE Setup

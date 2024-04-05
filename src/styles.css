@@ -154,19 +154,6 @@ article input.task-done {
 
 @font-face {
     font-display: block;
-    font-family: PatrickHand;
-    src: url("./assets/fonts/PatrickHand-Regular.ttf");
-}
-
-
-@font-face {
-    font-display: block;
-    font-family: ArchivoBlack;
-    src: url("./assets/fonts/ArchivoBlack-Regular.ttf");
-}
-
-@font-face {
-    font-display: block;
     font-family: PlayfairDisplay;
     src: url("./assets/fonts/PlayfairDisplay-VariableFont_wght.ttf");
 }
