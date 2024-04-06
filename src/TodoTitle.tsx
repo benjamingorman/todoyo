@@ -27,7 +27,7 @@ export const TodoTitle = (props: TodoTitleProps) => {
 
   return (
     <div class={classes().join(" ")}>
-      <div class="title-accent"></div>
+      <div class="title-accent"><pre> </pre></div>
       <input ref={ref}
         value={props.text}
         contenteditable={true}
@@ -40,6 +40,6 @@ export const TodoTitle = (props: TodoTitleProps) => {
         }}
       >
       </input>
-    </div>
+    </div >
   );
 };

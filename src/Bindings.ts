@@ -13,4 +13,5 @@ export const Bindings: Record<Message, string[]> = {
   [Message.SWAP_DOWN]: ["]"],
   [Message.GO_TO_START]: ["g"],
   [Message.GO_TO_END]: ["Shift", "g"],
+  [Message.TOGGLE_HELP]: ["z"],
 };

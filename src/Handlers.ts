@@ -145,4 +145,8 @@ export function configureDefaultHandlers(api: AppApi, broker: MessageBroker) {
   broker.on(Message.GO_TO_END, () => {
     api.setSelectedIndex(Math.max(api.getTasks().length - 1, -1));
   });
+
+  broker.on(Message.TOGGLE_HELP, () => {
+    api.setShowHelp(!api.showHelp());
+  });
 }

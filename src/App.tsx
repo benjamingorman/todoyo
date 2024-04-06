@@ -1,4 +1,4 @@
-import { For, createSignal, createEffect } from "solid-js";
+import { For, createSignal, createEffect, Switch, Match, Show } from "solid-js";
 import { TaskData, TaskWidget, TaskList } from "./TodoTask";
 import { createStore } from "solid-js/store";
 import { Store } from "tauri-plugin-store-api";
@@ -6,6 +6,7 @@ import { TodoTitle } from "./TodoTitle";
 import { MessageBroker } from "./MessageBroker";
 import { AppApi } from "./AppApi";
 import { configureDefaultHandlers } from "./Handlers";
+import { UsageInfo } from "./UsageInfo";
 
 interface SaveData {
   taskLists: TaskList[];
@@ -25,6 +26,7 @@ function App() {
   // -1 means no task is selected and we're editing the list title
   const [selectedIndex, setSelectedIndex] = createSignal(-1);
   const [doFocus, setDoFocus] = createSignal(false);
+  const [showHelp, setShowHelp] = createSignal(false);
   const store = new Store(`.tasks.${SETTINGS_VERSION}.dat`);
 
   let todoListsRef: HTMLDivElement | undefined;
@@ -38,6 +40,8 @@ function App() {
     setSelectedIndex,
     doFocus,
     setDoFocus,
+    showHelp,
+    setShowHelp,
   });
 
   const broker = new MessageBroker(api);
@@ -133,7 +137,7 @@ function App() {
             </div>
 
             <div class="row">
-              <button class="add-task" onClick={api.createNewTask}>
+              <button class="add-task" onClick={() => api.createNewTask()}>
                 +
               </button>
             </div>
@@ -141,7 +145,14 @@ function App() {
         )}</For>
         {/* Ghost container to make sure scrolling always works */}
         <div class="container"></div>
+
       </div>
+
+      <Show when={showHelp()}>
+        <div class="container">
+          <UsageInfo />
+        </div>
+      </Show>
     </div>
   );
 }

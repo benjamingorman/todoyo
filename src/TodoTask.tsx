@@ -35,8 +35,10 @@ export const TaskWidget = (props: TaskWidgetProps) => {
   // const [title, setTitle] = createSignal(props.task.title);
 
   let inputRef: HTMLInputElement | undefined;
+  let articleRef: HTMLDivElement | undefined;
 
   createEffect(() => {
+    if (props.selected) articleRef?.focus();
     if (props.doFocus) inputRef?.focus();
   });
 
@@ -46,7 +48,7 @@ export const TaskWidget = (props: TaskWidgetProps) => {
   ];
 
   return (
-    <article class={classes().join(" ")} onClick={props.onTouch}>
+    <article ref={articleRef} class={classes().join(" ")} onClick={props.onTouch}>
       <div class="task-accent"></div>
       <input
         ref={inputRef}

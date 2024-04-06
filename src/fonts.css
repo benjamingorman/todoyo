@@ -1,7 +1,11 @@
-
+@font-face {
+  font-display: block;
+  font-family: PlayfairDisplay;
+  src: url("./assets/fonts/PlayfairDisplay-VariableFont_wght.ttf");
+}
 
 @font-face {
-    font-display: block;
-    font-family: PlayfairDisplay;
-    src: url("./assets/fonts/PlayfairDisplay-VariableFont_wght.ttf");
+  font-display: block;
+  font-family: ShantellSans;
+  src: url("./assets/fonts/ShantellSans/ShantellSans-Light.ttf");
 }

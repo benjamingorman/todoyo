@@ -18,6 +18,7 @@ const allMsg = [
   Message.SWAP_DOWN,
   Message.GO_TO_START,
   Message.GO_TO_END,
+  Message.TOGGLE_HELP,
 ];
 
 export class MessageBroker {

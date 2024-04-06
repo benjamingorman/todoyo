@@ -12,6 +12,8 @@ and efficient as possible.
 - [x] Vim style navigation
 - [x] Persistent local storage
 - [x] Support for multiple named todo lists
+- [ ] Help box
+- [ ] Better vertical scrolling behaviour
 - [ ] Customizable themes
 - [ ] Customizable keybindings
 - [ ] Support for nested todo items

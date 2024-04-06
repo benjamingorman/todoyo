@@ -15,6 +15,9 @@ interface AppControls {
 
   doFocus: Accessor<boolean>;
   setDoFocus: Setter<boolean>;
+
+  showHelp: Accessor<boolean>;
+  setShowHelp: Setter<boolean>;
 }
 
 export class AppApi {
@@ -30,6 +33,9 @@ export class AppApi {
   doFocus: Accessor<boolean>;
   setDoFocus: Setter<boolean>;
 
+  showHelp: Accessor<boolean>;
+  setShowHelp: Setter<boolean>;
+
   constructor(api: AppControls) {
     this.getTaskLists = api.getTaskLists;
     this.setTaskLists = api.setTaskLists;
@@ -39,6 +45,8 @@ export class AppApi {
     this.setSelectedIndex = api.setSelectedIndex;
     this.doFocus = api.doFocus;
     this.setDoFocus = api.setDoFocus;
+    this.showHelp = api.showHelp;
+    this.setShowHelp = api.setShowHelp;
   }
 
   /**

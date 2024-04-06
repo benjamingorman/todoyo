@@ -1,13 +1,14 @@
 :root {
   /* Light mode */
-  --lm-color-bg: white;
-  --lm-color-primary: black;
-  --lm-color-selected: var(--pico-color-yellow-50);
-  --lm-color-selected-accent: var(--pico-color-yellow-150);
-  --lm-color-focused: var(--pico-color-blue-50);
-  --lm-color-focused-accent: var(--pico-color-blue-150);
-  --lm-color-deleted: var(--pico-color-grey-50);
-  --lm-color-deleted-accent: var(--pico-color-grey-150);
+  --lm-color-bg: var(--pico-color-pink-250);
+  --lm-color-primary: var(--pico-color-grey-850);
+  --lm-color-passive: var(--pico-color-pink-150);
+  --lm-color-selected: var(--pico-color-pink-50);
+  --lm-color-selected-accent: var(--pico-color-grey-950);
+  --lm-color-focused: var(--pico-color-green-50);
+  --lm-color-focused-accent: var(--pico-color-green-650);
+  --lm-color-deleted: var(--pico-color-pink-350);
+  --lm-color-deleted-accent: var(--pico-color-pink-450);
 
   /* Dark mode */
   --dm-color-bg: black;
@@ -20,14 +21,15 @@
   --dm-color-deleted-accent: var(--pico-color-grey-550);
 
   /* Color scheme */
-  --color-bg: var(--dm-color-bg);
-  --color-primary: var(--dm-color-primary);
-  --color-selected: var(--dm-color-selected);
-  --color-selected-accent: var(--dm-color-selected-accent);
-  --color-focused: var(--dm-color-focused);
-  --color-focused-accent: var(--dm-color-focused-accent);
-  --color-deleted: var(--dm-color-deleted);
-  --color-deleted-accent: var(--dm-color-deleted-accent);
+  --color-bg: var(--lm-color-bg);
+  --color-primary: var(--lm-color-primary);
+  --color-passive: var(--lm-color-passive);
+  --color-selected: var(--lm-color-selected);
+  --color-selected-accent: var(--lm-color-selected-accent);
+  --color-focused: var(--lm-color-focused);
+  --color-focused-accent: var(--lm-color-focused-accent);
+  --color-deleted: var(--lm-color-deleted);
+  --color-deleted-accent: var(--lm-color-deleted-accent);
 
   --font-main: ShantellSans;
   
@@ -40,14 +42,6 @@ body {
   margin: 0;
   padding: 0;
 }
-
-/* .row { */
-/*   display: flex; */
-/* } */
-
-/* .col { */
-/*   flex: 1; */
-/* } */
 
 div.container {
   padding: 0.5rem;
@@ -62,13 +56,15 @@ h1 {
 }
 
 article {
-  background: var(--color-bg);
-  border: 1px solid var(--color-primary);
+  background: var(--color-passive);
+  /* border: 1px solid var(--color-primary); */
   display: flex;
   height: 2.2rem;
   margin: 10px 0;
   padding: 0.0rem;
   width: 400px;
+  border-radius: 1.1rem;
+  overflow: hidden;
 }
 
 article div.task-accent {
@@ -80,10 +76,11 @@ article div.task-accent {
 article input {
   flex: 1;
   width: 100%;
-  margin: 0.2rem 0 0 0.2rem;
+  margin: 0.2rem 0 0 0.6rem;
   padding: 0;
   border: none;
   height: 1.8rem;
+  border-radius: 0.9rem;
   background: inherit;
   font-size: 1rem;
   font-family: var(--font-main);
@@ -119,7 +116,6 @@ article.selected {
   background: var(--color-selected);
 }
 
-
 article.selected div.task-accent {
   flex-basis: 12px;
 }
@@ -127,6 +123,8 @@ article.selected div.task-accent {
 .todo-title {
   display: flex;
   height: 1.4rem;
+  overflow: hidden;
+  border-radius: 0.7rem;
 }
 
 .todo-title input {
@@ -186,44 +184,17 @@ article.selected div.task-accent {
 }
 
 button.add-task {
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 0.7rem;
   border: 1px solid var(--color-primary);
   margin-top: 10px;
   padding: 0.2rem;
-  background: var(--color-bg);
-  color: var(--color-fg);
+  background: var(--color-primary);
+  color: var(--color-passive);
 }
 
 button.add-task:hover {
   background: var(--color-selected-accent);
   cursor: pointer;
-}
-
-.usage-info {
-  margin: 0;
-  border-top: 1px solid var(--color-primary);
-}
-
-.usage-info h3 {
-  margin: 0.2rem 0.2rem;
-}
-
-.usage-info .row {
-  display: flex;
-}
-
-.usage-info .col {
-  flex-basis: 33%;
-  display: flex;
-  align-items: center;
-}
-
-.usage-info .keycap {
-  background: var(--pico-color-grey-550);
-  padding: 0.1rem;
-  display: block;
-  width: 0.8rem;
-  height: 0.8rem;
-  font-size: 0.6rem;
-  text-align: center;
-  margin-right: 5px;
 }

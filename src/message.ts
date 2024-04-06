@@ -11,4 +11,5 @@ export enum Message {
   SWAP_DOWN,
   GO_TO_START,
   GO_TO_END,
+  TOGGLE_HELP,
 }
