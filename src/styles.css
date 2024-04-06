@@ -129,32 +129,35 @@ article.selected div.task-accent {
   height: 1.4rem;
 }
 
-.todo-title input {
-  background: var(--color-bg);
-  color: var(--color-primary);
-  font-size: 1rem;
-  border: none;
-  margin: 0;
-  flex: 1;
-  padding-bottom: 0;
-  font-weight: normal;
-  text-decoration: none;
-  font-family: var(--font-main);
-}
-
 .todo-title .title-accent {
-  flex-basis: 0px;
-  width: 0px;
-  height: 100%;
   margin-right: 0px;
+  flex-basis: 0px;
+
+  height: 100%;
   transition: all 0.2s;
   background: var(--color-selected-accent);
+}
+
+.todo-title .title-wrapper {
+  flex: 1;
 }
 
 .todo-title.selected .title-accent {
   flex-basis: 12px;
   margin-right: 0.2rem;
-  width: 12px;
+}
+
+.todo-title input {
+  width: 100%;
+  background: var(--color-bg);
+  color: var(--color-primary);
+  font-size: 1rem;
+  border: none;
+  margin: 0;
+  padding-bottom: 0;
+  font-weight: normal;
+  text-decoration: none;
+  font-family: var(--font-main);
 }
 
 .todo-title:has(input:focus) .title-accent {
@@ -167,9 +170,6 @@ article.selected div.task-accent {
 
 .todo-title.done {
   text-decoration: line-through;
-}
-
-.todo-title.selected {
 }
 
 .todo-lists {

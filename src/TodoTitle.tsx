@@ -27,19 +27,20 @@ export const TodoTitle = (props: TodoTitleProps) => {
 
   return (
     <div class={classes().join(" ")}>
-      <div class="title-accent"><pre> </pre></div>
-      <input ref={ref}
-        value={props.text}
-        contenteditable={true}
-        onChange={(e) => { props.onEdit(e.currentTarget.value); }}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === "Escape") {
-            ref?.blur();
-          }
-          e.stopPropagation();
-        }}
-      >
-      </input>
+      <div class="title-accent"></div>
+      <div class="title-wrapper">
+        <input ref={ref}
+          value={props.text}
+          onChange={(e) => { props.onEdit(e.currentTarget.value); }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === "Escape") {
+              ref?.blur();
+            }
+            e.stopPropagation();
+          }}
+        >
+        </input>
+      </div>
     </div >
   );
 };
