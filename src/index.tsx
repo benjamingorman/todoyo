@@ -3,6 +3,7 @@ import { render } from "solid-js/web";
 
 import "./css/pico.colors.min.css";
 // import "./css/pico.amber.css";
+import "./fonts.css";
 import "./styles.css";
 import "./styles-titlebar.css";
 import "./assets/fonts/PatrickHand-Regular.ttf";

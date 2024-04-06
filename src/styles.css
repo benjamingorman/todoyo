@@ -1,99 +1,118 @@
 :root {
-    /* margin-top: 20px; */
-    background: white;
-    font-family: PlayfairDisplay;
-    color: black;
+  /* Light mode */
+  --lm-color-bg: white;
+  --lm-color-primary: black;
+  --lm-color-selected: var(--pico-color-yellow-50);
+  --lm-color-selected-accent: var(--pico-color-yellow-150);
+  --lm-color-focused: var(--pico-color-blue-50);
+  --lm-color-focused-accent: var(--pico-color-blue-150);
+  --lm-color-deleted: var(--pico-color-grey-50);
+  --lm-color-deleted-accent: var(--pico-color-grey-150);
+
+  /* Dark mode */
+  --dm-color-bg: black;
+  --dm-color-primary: white;
+  --dm-color-selected: var(--pico-color-blue-850);
+  --dm-color-selected-accent: var(--pico-color-blue-550);
+  --dm-color-focused: var(--pico-color-purple-850);
+  --dm-color-focused-accent: var(--pico-color-purple-550);
+  --dm-color-deleted: var(--pico-color-grey-850);
+  --dm-color-deleted-accent: var(--pico-color-grey-550);
+
+  /* Color scheme */
+  --color-bg: var(--dm-color-bg);
+  --color-primary: var(--dm-color-primary);
+  --color-selected: var(--dm-color-selected);
+  --color-selected-accent: var(--dm-color-selected-accent);
+  --color-focused: var(--dm-color-focused);
+  --color-focused-accent: var(--dm-color-focused-accent);
+  --color-deleted: var(--dm-color-deleted);
+  --color-deleted-accent: var(--dm-color-deleted-accent);
+
+  --font-main: PlayfairDisplay;
+  
+  background: var(--color-bg);
+  color: var(--color-primary);
+  font-family: var(--font-main);
 }
 
 body {
-    margin: 0;
-}
-
-button.add-task {
-    border: 1px solid black;
-    margin-top: 10px;
-    padding: 0.2rem;
-    background: var(--pico-color-green-150);
+  margin: 0;
+  padding: 0;
 }
 
 div.container {
-    padding: 0.5rem;
+  padding: 0.5rem;
 }
 
 h1 {
-    margin: 0;
-    padding: 0.4rem;
-    padding-bottom: 0;
-    font-family: PlayfairDisplay;
-    border-bottom: 1px solid black;
-}
-
-span.yo-accent {
-    color: black;
+  margin: 0;
+  padding-left: 0.6rem;
+  font-family: PlayfairDisplay;
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--color-primary);
 }
 
 article {
-    display: flex;
-    padding: 0.0rem;
-    /* border-radius: 4px; */
-    background: white;
-    border: 1px solid black;
-    margin: 10px 0;
-    height: 2.2rem;
-    width: 400px;
-    /* overflow-y: hidden; */
+  background: var(--color-bg);
+  border: 1px solid var(--color-primary);
+  display: flex;
+  height: 2.2rem;
+  margin: 10px 0;
+  padding: 0.0rem;
+  width: 400px;
 }
 
 article div.task-accent {
-    flex-basis: 0px;
-    transition: flex-basis 0.2s;
-    background: var(--pico-color-yellow-150);
+  flex-basis: 0px;
+  transition: flex-basis 0.2s;
+  background: var(--color-selected-accent);
+}
+
+article input {
+  flex: 1;
+  margin: 0.2rem 0 0 0.3rem;
+  padding: 0;
+  border: none;
+  height: 1.8rem;
+  background: inherit;
+  font-size: 1rem;
+  font-family: PlayfairDisplay;
+  color: var(--color-primary);
+}
+
+article input:focus {
+  outline: none;
+}
+
+article input.task-done {
+  text-decoration: line-through;
 }
 
 article:has(input:focus) {
-    background: var(--pico-color-blue-50);
+  background: var(--color-focused);
 }
 
 article:has(input:focus) div.task-accent {
-    background: var(--pico-color-blue-150);
+  background: var(--color-focused-accent);
 }
 
 article.task-done {
-    background: var(--pico-color-grey-50);
+  background: var(--color-deleted);
 }
 
 article.task-done div.task-accent {
-    flex-basis: 12px;
-    background: var(--pico-color-grey-150);
+  flex-basis: 12px;
+  background: var(--color-deleted-accent);
 }
 
 article.selected {
-    background: var(--pico-color-yellow-50);
+  background: var(--color-selected);
 }
 
 
 article.selected div.task-accent {
-    flex-basis: 12px;
-}
-
-article input {
-    flex: 1;
-    margin: 0.2rem 0 0 0.3rem;
-    padding: 0;
-    border: none;
-    height: 1.8rem;
-    background: inherit;
-    font-size: 1rem;
-    font-family: PlayfairDisplay;
-}
-
-article input:focus {
-    outline: none;
-}
-
-
-article input.task-done {
-    text-decoration: line-through;
+  flex-basis: 12px;
 }
 
 .todo-title {
@@ -101,6 +120,8 @@ article input.task-done {
 }
 
 .todo-title input {
+  background: var(--color-bg);
+  color: var(--color-primary);
   font-size: 1rem;
   border: none;
   margin: 0;
@@ -115,7 +136,7 @@ article input.task-done {
   flex-basis: 0px;
   margin-right: 0px;
   transition: all 0.2s;
-  background: var(--pico-color-yellow-150);
+  background: var(--color-selected-accent);
 }
 
 .todo-title.selected .title-accent {
@@ -124,12 +145,11 @@ article input.task-done {
 }
 
 .todo-title:has(input:focus) .title-accent {
-    background: var(--pico-color-blue-150);
+  background: var(--color-focused-accent);
 }
 
 .todo-title input:focus {
-    /* background: var(--pico-color-blue-50); */
-    outline: none;
+  outline: none;
 }
 
 .todo-title.done {
@@ -152,9 +172,10 @@ article input.task-done {
   scroll-snap-align: left;
 }
 
-@font-face {
-    font-display: block;
-    font-family: PlayfairDisplay;
-    src: url("./assets/fonts/PlayfairDisplay-VariableFont_wght.ttf");
+button.add-task {
+  border: 1px solid var(--color-primary);
+  margin-top: 10px;
+  padding: 0.2rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
 }
-
