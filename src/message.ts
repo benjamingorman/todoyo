@@ -1,0 +1,14 @@
+export enum Message {
+  NEW_TASK,
+  EDIT_TASK,
+  NEXT_ITEM,
+  PREV_ITEM,
+  NEXT_LIST,
+  PREV_LIST,
+  DONE_TASK,
+  UNDO_DONE_TASK,
+  SWAP_UP,
+  SWAP_DOWN,
+  GO_TO_START,
+  GO_TO_END,
+}
