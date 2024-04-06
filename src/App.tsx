@@ -1,4 +1,4 @@
-import { For, createSignal, createEffect, Switch, Match, Show } from "solid-js";
+import { For, createSignal, createEffect, Show } from "solid-js";
 import { TaskData, TaskWidget, TaskList } from "./TodoTask";
 import { createStore } from "solid-js/store";
 import { Store } from "tauri-plugin-store-api";
@@ -26,7 +26,7 @@ function App() {
   // -1 means no task is selected and we're editing the list title
   const [selectedIndex, setSelectedIndex] = createSignal(-1);
   const [doFocus, setDoFocus] = createSignal(false);
-  const [showHelp, setShowHelp] = createSignal(false);
+  const [showHelp, setShowHelp] = createSignal(true);
   const store = new Store(`.tasks.${SETTINGS_VERSION}.dat`);
 
   let todoListsRef: HTMLDivElement | undefined;
@@ -148,11 +148,7 @@ function App() {
 
       </div>
 
-      <Show when={showHelp()}>
-        <div class="container">
-          <UsageInfo />
-        </div>
-      </Show>
+      <UsageInfo toggle={showHelp()} />
     </div>
   );
 }

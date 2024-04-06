@@ -20,14 +20,14 @@
   --dm-color-deleted-accent: var(--pico-color-grey-550);
 
   /* Color scheme */
-  --color-bg: var(--dm-color-bg);
-  --color-primary: var(--dm-color-primary);
-  --color-selected: var(--dm-color-selected);
-  --color-selected-accent: var(--dm-color-selected-accent);
-  --color-focused: var(--dm-color-focused);
-  --color-focused-accent: var(--dm-color-focused-accent);
-  --color-deleted: var(--dm-color-deleted);
-  --color-deleted-accent: var(--dm-color-deleted-accent);
+  --color-bg: var(--lm-color-bg);
+  --color-primary: var(--lm-color-primary);
+  --color-selected: var(--lm-color-selected);
+  --color-selected-accent: var(--lm-color-selected-accent);
+  --color-focused: var(--lm-color-focused);
+  --color-focused-accent: var(--lm-color-focused-accent);
+  --color-deleted: var(--lm-color-deleted);
+  --color-deleted-accent: var(--lm-color-deleted-accent);
 
   --font-main: ShantellSans;
   
@@ -199,8 +199,28 @@ button.add-task:hover {
 }
 
 .usage-info {
+  position: fixed;
+
+  height: auto;
+  width: 100vw;
+
+  bottom: 0px;
+  transition: bottom 0.3s;
+
   margin: 0;
   border-top: 1px solid var(--color-primary);
+
+  background: var(--color-bg);
+  opacity: 0.9;
+}
+
+.usage-info .content {
+  padding: 0.4rem;
+  max-width: 400px;
+}
+
+.usage-info.toggle-off {
+  bottom: -100%;
 }
 
 .usage-info h3 {
@@ -218,7 +238,7 @@ button.add-task:hover {
 }
 
 .usage-info .keycap {
-  background: var(--pico-color-grey-550);
+  background: var(--color-selected);
   padding: 0.1rem;
   display: block;
   width: 0.8rem;
