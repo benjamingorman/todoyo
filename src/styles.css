@@ -34,11 +34,17 @@
   background: var(--color-bg);
   color: var(--color-primary);
   font-family: var(--font-main);
+  background: transparent;
+  border: none;
+  overflow: hidden;
 }
 
 body {
   margin: 0;
   padding: 0;
+}
+
+#App {
 }
 
 /* .row { */
@@ -55,10 +61,12 @@ div.container {
 
 h1 {
   margin: 0;
-  padding-left: 0.6rem;
+  text-align: right;
+  /* margin-top: 14px; */
+  padding: 0 0.6rem;
   font-family: var(--font-main);
   font-size: 1.5rem;
-  border-bottom: 1px solid var(--color-primary);
+  /* border-bottom: 1px solid var(--color-primary); */
 }
 
 article {
@@ -174,7 +182,7 @@ article.selected div.task-accent {
 
 .todo-lists {
   width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
   scroll-snap-type: x mandatory;
 }

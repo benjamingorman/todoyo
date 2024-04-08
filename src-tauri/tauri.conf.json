@@ -33,7 +33,8 @@
         "title": "todoyo",
         "width": 420,
         "height": 400,
-        "decorations": false
+        "decorations": true,
+        "titleBarStyle": "Overlay"
       }
     ],
     "security": {
