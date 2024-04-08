@@ -83,7 +83,7 @@ article {
   margin: 10px 0;
   padding: 0.0rem;
   width: 400px;
-  scroll-margin: 20px;
+  scroll-margin: 8px;
 }
 
 article div.task-accent {
@@ -163,7 +163,7 @@ article.selected div.task-accent {
 }
 
 .todo-title input {
-  scroll-margin: 20px;
+  scroll-margin: 8px;
   width: 100%;
   background: var(--color-bg);
   color: var(--color-primary);
@@ -237,6 +237,7 @@ button.add-task:hover {
 }
 
 .usage-info .help-trigger {
+  background: var(--color-bg);
   border: 1px solid var(--color-primary);
   width: 28px;
   height: 14px;
