@@ -12,6 +12,7 @@ interface SaveData {
 	taskLists: TaskList[];
 	selectedListIndex: number;
 	selectedIndex: number;
+	showHelp: boolean;
 }
 
 const SETTINGS_VERSION = 1;
@@ -53,12 +54,15 @@ function App() {
 		const listRef = document.getElementById(`todo-list-${selectedListIndex()}`);
 		console.log("listRef", listRef);
 		if (!listRef) return;
-		console.log("offsetLeft", listRef.offsetLeft);
-		console.log("scrollLeft", todoListsRef.scrollLeft);
-		todoListsRef.scrollTo({
-			left: listRef.offsetLeft,
-			behavior: "smooth",
-		});
+		console.log("scrolling to", todoListsRef);
+		// setTimeout(
+		// 	() =>
+		// 		todoListsRef.scrollTo({
+		// 			left: listRef.offsetLeft - 2,
+		// 			behavior: "smooth",
+		// 		}),
+		// 	1,
+		// );
 	});
 
 	// Save/load tasks from store
@@ -67,6 +71,7 @@ function App() {
 			taskLists: taskLists,
 			selectedListIndex: selectedListIndex(),
 			selectedIndex: selectedIndex(),
+			showHelp: showHelp(),
 		};
 		console.log("Saving tasks...", saveData);
 		// Use different save data for dev and prod
@@ -91,6 +96,7 @@ function App() {
 				setTaskLists(saveData.taskLists);
 				setSelectedListIndex(saveData.selectedListIndex);
 				setSelectedIndex(saveData.selectedIndex);
+				setShowHelp(saveData.showHelp);
 			},
 			(e) => {
 				console.error("No tasks found in store", e);
@@ -101,10 +107,6 @@ function App() {
 
 	return (
 		<div id="App">
-			<h1>
-				todo<span class="yo-accent">yo.</span>
-			</h1>
-
 			<div ref={todoListsRef} class="todo-lists">
 				<For each={taskLists}>
 					{(currList, i) => (
@@ -165,7 +167,10 @@ function App() {
 				<div class="container" />
 			</div>
 
-			<UsageInfo toggle={showHelp()} />
+			<UsageInfo
+				toggle={showHelp()}
+				triggerToggle={() => setShowHelp(!showHelp())}
+			/>
 		</div>
 	);
 }

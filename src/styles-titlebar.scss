@@ -5,7 +5,7 @@
 // }
 
 .titlebar {
-  height: 34px;
+  height: 28px;
   user-select: none;
   display: flex;
   justify-content: flex-end;
@@ -13,8 +13,14 @@
   top: 0;
   left: 0;
   right: 0;
+  background: white;
 
   border-bottom: 1px solid var(--color-primary);
+
+  h1 {
+    height: 100%;
+    font-size: 1.3rem;
+  }
 }
 
 $close-red: #ff6159;

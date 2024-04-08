@@ -9,7 +9,7 @@ import "./css/pico.colors.min.css";
 import "./fonts.css";
 // import "./theme-tomnook.css";
 import "./styles-titlebar.scss";
-import "./styles.css";
+import "./styles.scss";
 
 document
 	.getElementById("titlebar-minimize")

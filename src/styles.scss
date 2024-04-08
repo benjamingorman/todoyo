@@ -35,8 +35,14 @@
   color: var(--color-primary);
   font-family: var(--font-main);
   background: transparent;
-  border: none;
+  /* overflow: scroll; */
   overflow: hidden;
+  border: none;
+}
+:root::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  background: transparent;
 }
 
 body {
@@ -45,6 +51,7 @@ body {
 }
 
 #App {
+  margin-top: 28px;
 }
 
 /* .row { */
@@ -64,8 +71,7 @@ h1 {
   text-align: right;
   /* margin-top: 14px; */
   padding: 0 0.6rem;
-  font-family: var(--font-main);
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
   /* border-bottom: 1px solid var(--color-primary); */
 }
 
@@ -77,6 +83,7 @@ article {
   margin: 10px 0;
   padding: 0.0rem;
   width: 400px;
+  scroll-margin: 20px;
 }
 
 article div.task-accent {
@@ -156,6 +163,7 @@ article.selected div.task-accent {
 }
 
 .todo-title input {
+  scroll-margin: 20px;
   width: 100%;
   background: var(--color-bg);
   color: var(--color-primary);
@@ -176,21 +184,25 @@ article.selected div.task-accent {
   outline: none;
 }
 
-.todo-title.done {
+.todo-title.done input {
   text-decoration: line-through;
 }
 
 .todo-lists {
   width: 100%;
-  overflow: hidden;
+  height: 100vh;
+  overflow: auto;
   display: flex;
-  scroll-snap-type: x mandatory;
+}
+
+.todo-lists::-webkit-scrollbar {
+  display: none;
 }
 
 .todo-lists .container {
   flex: 0 0 auto;
   width: 400px;
-  scroll-snap-align: left;
+  /* scroll-snap-align: left; */
 }
 
 button.add-task {
@@ -209,7 +221,7 @@ button.add-task:hover {
 .usage-info {
   position: fixed;
 
-  height: auto;
+  height: 140px;
   width: 100vw;
 
   bottom: 0px;
@@ -220,6 +232,20 @@ button.add-task:hover {
 
   background: var(--color-bg);
   opacity: 0.9;
+
+  font-size: 0.8rem;
+}
+
+.usage-info .help-trigger {
+  border: 1px solid var(--color-primary);
+  width: 28px;
+  height: 14px;
+  text-align: center;
+  position: absolute;
+  top: -16px;
+  right: 6px;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .usage-info .content {
@@ -228,7 +254,7 @@ button.add-task:hover {
 }
 
 .usage-info.toggle-off {
-  bottom: -100%;
+  bottom: -140px;
 }
 
 .usage-info h3 {
@@ -247,11 +273,14 @@ button.add-task:hover {
 
 .usage-info .keycap {
   background: var(--color-selected);
-  padding: 0.1rem;
-  display: block;
-  width: 0.8rem;
-  height: 0.8rem;
-  font-size: 0.6rem;
+  border: 1px solid var(--color-primary);
+  padding: 0.15rem;
   text-align: center;
-  margin-right: 5px;
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+  font-size: 0.6rem;
+  border-radius: 100%;
+  text-align: center;
+  margin: 2px 5px;
 }
